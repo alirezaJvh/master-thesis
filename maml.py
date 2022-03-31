@@ -156,18 +156,12 @@ class MAML:
                     for key in weights.keys():
                         weight_size = np.prod(weights[key].get_shape().as_list())
 
-                        # print('****************')
-                        # print(task_enhanced_emb_vec)
-                        # print('********************')
-                        # sys.exit()
-                        
                         eta.append(tf.reshape(
                             tf.layers.dense(task_enhanced_emb_vec, weight_size, activation=tf.nn.sigmoid,
                                             name='eta_{}'.format(key)), tf.shape(weights[key])))
                     eta = dict(zip(weights.keys(), eta))
 
-                    # task_weights = dict(zip(weights.keys(), [weights[key] * eta[key] for key in weights.keys()]))
-                    task_weights = eta
+                    task_weights = dict(zip(weights.keys(), [weights[key] * eta[key] for key in weights.keys()]))
 
                 task_outputbs, task_lossesb = [], []
 
