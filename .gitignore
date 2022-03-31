@@ -1,3 +1,4 @@
 meta-dataset/
 __pycache__/
 log/
+.vscode/
