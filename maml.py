@@ -150,16 +150,28 @@ class MAML:
                 _, meta_knowledge_h = self.tree.model(task_embed_vec)
 
                 task_enhanced_emb_vec = tf.concat([task_embed_vec, meta_knowledge_h], axis=1)
+                
 
                 with tf.variable_scope('task_specific_mapping', reuse=tf.AUTO_REUSE):
                     eta = []
                     for key in weights.keys():
                         weight_size = np.prod(weights[key].get_shape().as_list())
 
-                        eta.append(tf.reshape(
-                            tf.layers.dense(task_enhanced_emb_vec, weight_size, activation=tf.nn.sigmoid,
-                                            name='eta_{}'.format(key)), tf.shape(weights[key])))
+                        eta_param = tf.layers.dense(task_enhanced_emb_vec, 
+                                                    2 * weight_size, 
+                                                    activation=tf.nn.sigmoid,
+                                                    name='eta_{}'.format(key))
+                                                    
+                        sample_weight, _ = self.possibly_sample(eta_param)
+                        # ******************************************************
+                        # 
+                        # make baysian eta then product it with weights
+                        # 
+                        # ******************************************************
+                        eta.append(tf.reshape(sample_weight, tf.shape(weights[key])))
+                      
                     eta = dict(zip(weights.keys(), eta))
+                    
 
                     task_weights = dict(zip(weights.keys(), [weights[key] * eta[key] for key in weights.keys()]))
 
