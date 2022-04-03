@@ -165,7 +165,7 @@ class MAML:
                         sample_weight, _ = self.possibly_sample(eta_param)
                         # ******************************************************
                         # 
-                        # make baysian eta then product it with weights
+                        # make baysian eta and sample it, then product it with weights
                         # 
                         # ******************************************************
                         eta.append(tf.reshape(sample_weight, tf.shape(weights[key])))
