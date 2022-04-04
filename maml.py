@@ -168,6 +168,7 @@ class MAML:
                 with tf.variable_scope('task_specific_mapping', reuse=tf.AUTO_REUSE):
                     eta = []
                     for key in weights.keys():
+                        weight_size = np.prod(weights[key].get_shape().as_list())
                         eta_param = tf.layers.dense(latent, 
                                                     2 * weight_size, 
                                                     activation=tf.nn.sigmoid,
