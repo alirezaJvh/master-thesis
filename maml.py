@@ -150,20 +150,19 @@ class MAML:
                 _, meta_knowledge_h = self.tree.model(task_embed_vec)
 
                 task_enhanced_emb_vec = tf.concat([task_embed_vec, meta_knowledge_h], axis=1)
-                # print('*************************************')
-                # print(task_enhanced_emb_vec)
-                # print('+++++++++++++++++++++++++++++++++++++')
-                # sys.exit()
+
                 latent_dim = 64
                 encoder_output = tf.layers.dense(task_enhanced_emb_vec, 2 * latent_dim)
-                # print(encoder_output)
-                # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+               
                 latent, kl = self.possibly_sample(encoder_output)
-                # print('////////////////////////////////////////')
-                # print(latent)
-                # print('----------------------------------------')
-                # print(kl)
-                # sys.exit()
+
+                # ######################################################################
+                # 
+                # 
+                #  clustring -> encoder -> latent -> decoder (FC) -> predict
+                # 
+                # 
+                # ######################################################################
 
                 with tf.variable_scope('task_specific_mapping', reuse=tf.AUTO_REUSE):
                     eta = []
@@ -174,7 +173,7 @@ class MAML:
                                                     2 * weight_size, 
                                                     activation=tf.nn.sigmoid,
                                                     name='eta_{}'.format(key))
-                                                    
+
                         sample_weight, _ = self.possibly_sample(eta_param)
                         # # ******************************************************
                         # # 
