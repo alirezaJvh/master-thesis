@@ -36,7 +36,9 @@ class MAML:
             self.lstmae = LSTMAutoencoder(hidden_num=FLAGS.hidden_dim)
         elif FLAGS.task_embedding_type == 'mean':
             self.lstmae = MeanAutoencoder(hidden_num=FLAGS.hidden_dim)
-        self.tree = TreeLSTM(input_dim=FLAGS.hidden_dim, tree_hidden_dim=FLAGS.hidden_dim)
+        # input_dim=FLAGS.hidden_dim
+        # tree_hidden_dim=FLAGS.hidden_dim
+        self.tree = TreeLSTM(input_dim=32, tree_hidden_dim=32)
         if FLAGS.datasource in ['sinusoid', 'mixture']:
             self.dim_hidden = [40, 40]
             self.loss_func = mse
@@ -146,20 +148,26 @@ class MAML:
                     input_task_emb = tf.concat((input_task_emb, one_hot_labela), axis=-1)
 
                 task_embed_vec, task_emb_loss = self.lstmae.model(input_task_emb)
+                # task_embed_vec -> (1, 128)
+                
+                encoder_output = tf.layers.dense(task_embed_vec, 32)
+                # encoder_output -> (1, 32)
+                _, meta_knowledge_h = self.tree.model(encoder_output)
+                # meta-knowledge_h -> (1, 32)
 
-                _, meta_knowledge_h = self.tree.model(task_embed_vec)
-
-                task_enhanced_emb_vec = tf.concat([task_embed_vec, meta_knowledge_h], axis=1)
-
-                latent_dim = 64
-                encoder_output = tf.layers.dense(task_enhanced_emb_vec, 2 * latent_dim)
+                task_enhanced_emb_vec = tf.concat([encoder_output, meta_knowledge_h], axis=1)
+                # task_enhanced_emb_vec -> (1, 32+32)
                
-                latent, kl = self.possibly_sample(encoder_output)
+                encoder_output
+                latent_dim = 64
+                fc_output = tf.layers.dense(task_enhanced_emb_vec, 2 * latent_dim)
+               
+                latent, kl = self.possibly_sample(fc_output)
 
                 # ######################################################################
                 # 
                 # 
-                #  clustring -> encoder -> latent -> decoder (FC) -> predict
+                #  encoder -> clustring -> fc -> latent -> decoder (FC) -> predict
                 # 
                 # 
                 # ######################################################################
@@ -180,7 +188,7 @@ class MAML:
                         # # make baysian eta and sample it, then product it with weights
                         # # 
                         # # ******************************************************
-                        eta.append(tf.reshape(sample_weight, tf.shape(weights[key])))                    
+                        eta.append(tf.reshape(sample_weight, tf.shape(weights[key]))) 
                     eta = dict(zip(weights.keys(), eta))
                     
 

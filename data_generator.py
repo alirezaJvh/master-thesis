@@ -8,6 +8,7 @@ import ipdb
 from tensorflow.python.platform import flags
 from utils import get_images
 import matplotlib.pyplot as plt
+import sys
 
 FLAGS = flags.FLAGS
 
@@ -93,7 +94,11 @@ class DataGenerator(object):
             self.img_size = config.get('img_size', (84, 84))
             self.dim_input = np.prod(self.img_size) * 3
             self.dim_output = self.num_classes
-            self.multidataset = ['CUB_Bird', 'DTD_Texture', 'FGVC_Aircraft', 'FGVCx_Fungi']
+            # self.multidataset = ['CUB_Bird', 'DTD_Texture', 'FGVC_Aircraft', 'FGVCx_Fungi']
+            # ######################################
+            # CUB_Bird
+            # ######################################
+            self.multidataset = ['CUB_Bird']
             metatrain_folders, metaval_folders = [], []
             for eachdataset in self.multidataset:
                 metatrain_folders.append(
@@ -271,9 +276,17 @@ class DataGenerator(object):
         # if FLAGS.train == False:
         #     np.random.seed(4)
         for image_itr in range(num_total_batches):
-            sel = np.random.randint(4)
+            # #####################################
+            # sel = np.random.randint(4)
+            # #####################################
+            sel = 0
             if FLAGS.train == False and FLAGS.test_dataset != -1:
-                sel = FLAGS.test_dataset
+                # ##################################
+                # sel = FLAGS.test_dataset
+                # ##################################
+                sel = 0
+            # print(len(folders[sel]))
+            # sys.exit()
             sampled_character_folders = random.sample(folders[sel], self.num_classes)
             random.shuffle(sampled_character_folders)
             labels_and_images = get_images(sampled_character_folders, range(self.num_classes),
@@ -287,7 +300,7 @@ class DataGenerator(object):
         filename_queue = tf.train.string_input_producer(tf.convert_to_tensor(all_filenames), shuffle=False)
         print('Generating image processing ops')
         image_reader = tf.WholeFileReader()
-        _, image_file = image_reader.read(filename_queue)
+        _,     image_file = image_reader.read(filename_queue)
         if FLAGS.datasource in ['miniimagenet', 'multidataset']:
             image = tf.image.decode_jpeg(image_file, channels=3)
             image.set_shape((self.img_size[0], self.img_size[1], 3))
