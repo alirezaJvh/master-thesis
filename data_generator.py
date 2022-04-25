@@ -94,11 +94,11 @@ class DataGenerator(object):
             self.img_size = config.get('img_size', (84, 84))
             self.dim_input = np.prod(self.img_size) * 3
             self.dim_output = self.num_classes
-            # self.multidataset = ['CUB_Bird', 'DTD_Texture', 'FGVC_Aircraft', 'FGVCx_Fungi']
+            self.multidataset = ['CUB_Bird', 'DTD_Texture', 'FGVC_Aircraft', 'FGVCx_Fungi']
             # ######################################
             # Fungi
             # ######################################
-            self.multidataset = ['FGVCx_Fungi']
+            # self.multidataset = ['FGVCx_Fungi']
             metatrain_folders, metaval_folders = [], []
             for eachdataset in self.multidataset:
                 metatrain_folders.append(
