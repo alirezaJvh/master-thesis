@@ -96,9 +96,9 @@ class DataGenerator(object):
             self.dim_output = self.num_classes
             # self.multidataset = ['CUB_Bird', 'DTD_Texture', 'FGVC_Aircraft', 'FGVCx_Fungi']
             # ######################################
-            # CUB_Bird
+            # Fungi
             # ######################################
-            self.multidataset = ['CUB_Bird']
+            self.multidataset = ['FGVCx_Fungi']
             metatrain_folders, metaval_folders = [], []
             for eachdataset in self.multidataset:
                 metatrain_folders.append(
