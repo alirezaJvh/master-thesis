@@ -277,14 +277,14 @@ class DataGenerator(object):
         #     np.random.seed(4)
         for image_itr in range(num_total_batches):
             # #####################################
-            # sel = np.random.randint(4)
+            sel = np.random.randint(4)
             # #####################################
-            sel = 0
+            # sel = 0
             if FLAGS.train == False and FLAGS.test_dataset != -1:
                 # ##################################
-                # sel = FLAGS.test_dataset
+                sel = FLAGS.test_dataset
                 # ##################################
-                sel = 0
+                # sel = 0
             # print(len(folders[sel]))
             # sys.exit()
             sampled_character_folders = random.sample(folders[sel], self.num_classes)
