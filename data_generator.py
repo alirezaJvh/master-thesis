@@ -285,8 +285,6 @@ class DataGenerator(object):
                 sel = FLAGS.test_dataset
                 # ##################################
                 # sel = 0
-            # print(len(folders[sel]))
-            # sys.exit()
             sampled_character_folders = random.sample(folders[sel], self.num_classes)
             random.shuffle(sampled_character_folders)
             labels_and_images = get_images(sampled_character_folders, range(self.num_classes),
