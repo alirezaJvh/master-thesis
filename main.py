@@ -9,8 +9,12 @@ tf.set_random_seed(1234)
 from data_generator import DataGenerator
 from maml import MAML
 from tensorflow.python.platform import flags
+import os
 
 FLAGS = flags.FLAGS
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
