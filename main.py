@@ -15,7 +15,7 @@ FLAGS = flags.FLAGS
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
-flags.DEFINE_integer('test_dataset', -1,
+flags.DEFINE_integer('test_dataset', 0,
                      'which dataset to be test: 0: bird, 1: texture, 2: aircraft, 3: fungi, -1 is test all')
 flags.DEFINE_integer('num_classes', 5, 'number of classes used in classification (e.g. 5-way classification).')
 flags.DEFINE_integer('num_test_task', 1000, 'number of test tasks.')
