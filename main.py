@@ -4,7 +4,7 @@ import pickle
 import random
 import matplotlib.pyplot as plt
 import tensorflow as tf
-
+import os
 tf.set_random_seed(1234)
 from data_generator import DataGenerator
 from maml import MAML
@@ -12,6 +12,8 @@ from tensorflow.python.platform import flags
 
 FLAGS = flags.FLAGS
 
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
