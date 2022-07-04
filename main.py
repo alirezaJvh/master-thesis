@@ -13,9 +13,9 @@ from tensorflow.python.platform import flags
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 ## Dataset/method options
-lags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
+flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
 flags.DEFINE_integer('test_dataset', 0,
                      'which dataset to be test: 0: bird, 1: texture, 2: aircraft, 3: fungi, -1 is test all')
