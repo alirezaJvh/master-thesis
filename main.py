@@ -4,6 +4,7 @@ import pickle
 import random
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import pandas as pd
 
 tf.set_random_seed(1234)
 from data_generator import DataGenerator
@@ -14,7 +15,7 @@ import os
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
@@ -216,6 +217,24 @@ def test(model, saver, sess, exp_string, data_generator, test_num_updates=None):
     means = np.mean(metaval_accuracies, 0)
     stds = np.std(metaval_accuracies, 0)
     ci95 = 1.96 * stds / np.sqrt(NUM_TEST_POINTS)
+    # model-name/hirarical-layer/best-mean/best-std/best-ci95/dataset/test_dataset/epoch
+    columns = ['model-name', 'hirarical-layer', 'mean', 'std', 'ci95', 'ds', 'test_ds', 'n_way', 'k-shot','epoch-w']
+    df = pd.DataFrame(columns=columns)
+    new_row = {
+        'model-name': 'master',
+        'hirarical-layer': '{}/{}/{}'.format(FLAGS.cluster_layer_0, FLAGS.cluster_layer_1, FLAGS.cluster_layer_2),
+        'mean': means.max(),
+        'std': stds[means.argmax()],
+        'ci95': ci95[means.argmax()],
+        'ds': FLAGS.datasource,
+        'test_ds': FLAGS.test_dataset,
+        'n_way': FLAGS.num_classes,
+        'k-shot': FLAGS.update_batch_size,
+        'epoch-w': FLAGS.test_epoch,
+    }
+
+    df = df.append(new_row, ignore_index=True)
+    df.to_csv('result.csv', mode='a', index=False, header=False)
 
     print('Mean validation accuracy/loss, stddev, and confidence intervals')
     print((means, stds, ci95))
