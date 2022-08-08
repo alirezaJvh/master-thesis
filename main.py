@@ -13,7 +13,7 @@ import pandas as pd
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
