@@ -102,24 +102,24 @@ class DataGenerator(object):
             metatrain_folders, metaval_folders = [], []
             for eachdataset in self.multidataset:
                 metatrain_folders.append(
-                    [os.path.join('{0}/meta-dataset/{1}/train'.format(FLAGS.datadir, eachdataset), label) \
-                     for label in os.listdir('{0}/meta-dataset/{1}/train'.format(FLAGS.datadir, eachdataset)) \
+                    [os.path.join('{0}/meta-dataset-noval/{1}/train'.format(FLAGS.datadir, eachdataset), label) \
+                     for label in os.listdir('{0}/meta-dataset-noval/{1}/train'.format(FLAGS.datadir, eachdataset)) \
                      if
-                     os.path.isdir(os.path.join('{0}/meta-dataset/{1}/train'.format(FLAGS.datadir, eachdataset), label)) \
+                     os.path.isdir(os.path.join('{0}/meta-dataset-noval/{1}/train'.format(FLAGS.datadir, eachdataset), label)) \
                      ])
                 if FLAGS.test_set:
                     metaval_folders.append(
-                        [os.path.join('{0}/meta-dataset/{1}/test'.format(FLAGS.datadir, eachdataset), label) \
-                         for label in os.listdir('{0}/meta-dataset/{1}/test'.format(FLAGS.datadir, eachdataset)) \
+                        [os.path.join('{0}/meta-dataset-noval/{1}/test'.format(FLAGS.datadir, eachdataset), label) \
+                         for label in os.listdir('{0}/meta-dataset-noval/{1}/test'.format(FLAGS.datadir, eachdataset)) \
                          if os.path.isdir(
-                            os.path.join('{0}/meta-dataset/{1}/test'.format(FLAGS.datadir, eachdataset), label)) \
+                            os.path.join('{0}/meta-dataset-noval/{1}/test'.format(FLAGS.datadir, eachdataset), label)) \
                          ])
                 else:
                     metaval_folders.append(
-                        [os.path.join('{0}/meta-dataset/{1}/val'.format(FLAGS.datadir, eachdataset), label) \
-                         for label in os.listdir('{0}/meta-dataset/{1}/val'.format(FLAGS.datadir, eachdataset)) \
+                        [os.path.join('{0}/meta-dataset-noval/{1}/val'.format(FLAGS.datadir, eachdataset), label) \
+                         for label in os.listdir('{0}/meta-dataset-noval/{1}/val'.format(FLAGS.datadir, eachdataset)) \
                          if os.path.isdir(
-                            os.path.join('{0}/meta-dataset/{1}/val'.format(FLAGS.datadir, eachdataset), label)) \
+                            os.path.join('{0}/meta-dataset-noval/{1}/val'.format(FLAGS.datadir, eachdataset), label)) \
                          ])
             self.metatrain_character_folders = metatrain_folders
             self.metaval_character_folders = metaval_folders

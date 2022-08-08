@@ -15,7 +15,7 @@ import os
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
@@ -56,8 +56,8 @@ flags.DEFINE_integer('task_embedding_num_filters', 32, 'number of filters for ta
 flags.DEFINE_string('task_embedding_type', 'rnn', 'rnn or mean')
 
 ## clustering information
-flags.DEFINE_integer('cluster_layer_0', 6, 'number of clusters in the first layer')
-flags.DEFINE_integer('cluster_layer_1', 3, 'number of clusters in the second layer')
+flags.DEFINE_integer('cluster_layer_0', 4, 'number of clusters in the first layer')
+flags.DEFINE_integer('cluster_layer_1', 2, 'number of clusters in the second layer')
 flags.DEFINE_integer('cluster_layer_2', 1, 'number of clusters in the third layer')
 # flags.DEFINE_integer('cluster_layer_2', -1, 'number of clusters in the third layer')
 
@@ -221,7 +221,7 @@ def test(model, saver, sess, exp_string, data_generator, test_num_updates=None):
     columns = ['model-name', 'hirarical-layer', 'mean', 'std', 'ci95', 'ds', 'test_ds', 'n_way', 'k-shot','epoch-w']
     df = pd.DataFrame(columns=columns)
     new_row = {
-        'model-name': 'master',
+        'model-name': 'master-noval',
         'hirarical-layer': '{}/{}/{}'.format(FLAGS.cluster_layer_0, FLAGS.cluster_layer_1, FLAGS.cluster_layer_2),
         'mean': means.max(),
         'std': stds[means.argmax()],
