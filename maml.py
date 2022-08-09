@@ -273,7 +273,10 @@ class MAML:
                 if FLAGS.task_embedding_type == 'mean':
                     gvs = [(tf.clip_by_value(grad, -3, 3), var) for grad, var in gvs]
                 if FLAGS.datasource == 'miniimagenet':
-                    gvs = [(tf.clip_by_value(grad, -10, 10), var) for grad, var in gvs]
+                    print('@@@@@@@@@@@@@@@@@')
+                    print(gvs)
+                    print('@@@@@@@@@@@@@@@@@')
+                    gvs = [if grad not None (tf.clip_by_value(grad, -10, 10), var) for grad, var in gvs]
                 self.metatrain_op = optimizer.apply_gradients(gvs)
         else:
             self.metaval_total_loss1 = total_loss1 = tf.reduce_sum(lossesa) / tf.to_float(FLAGS.meta_batch_size)
