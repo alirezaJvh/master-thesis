@@ -3,5 +3,5 @@ meta-dataset-noval/
 __pycache__/
 log/
 .vscode/
-miniImagenet-data/
+mini-imagenet-data/
 result.csv
