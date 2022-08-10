@@ -1,8 +1,8 @@
+__pycache__/
+.vscode/
 meta-dataset/
 mini-imagenet-data/
 meta-dataset-noval/
 dataset/
-__pycache__/
-log/
-.vscode/
 result.csv
+log/
