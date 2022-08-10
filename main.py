@@ -64,7 +64,7 @@ flags.DEFINE_integer('cluster_layer_2', 1, 'number of clusters in the third laye
 ## Logging, saving, and testing options
 flags.DEFINE_bool('log', True, 'if false, do not log summaries, for debugging code.')
 flags.DEFINE_string('logdir', './log/1shot', 'directory for summaries and checkpoints.')
-flags.DEFINE_string('datadir', './', 'directory for datasets.')
+flags.DEFINE_string('datadir', './dataset/', 'directory for datasets.')
 flags.DEFINE_bool('resume', True, 'resume training if there is a model available')
 flags.DEFINE_bool('train', True, 'True to train, False to test.')
 flags.DEFINE_bool('test_set', False, 'Set to true to test on the the test set, False for the validation set.')
