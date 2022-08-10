@@ -1,6 +1,7 @@
 meta-dataset/
 mini-imagenet-data/
 meta-dataset-noval/
+dataset/
 __pycache__/
 log/
 .vscode/
