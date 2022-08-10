@@ -13,7 +13,7 @@ import pandas as pd
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
@@ -53,14 +53,14 @@ flags.DEFINE_integer('task_embedding_num_filters', 32, 'number of filters for ta
 flags.DEFINE_string('task_embedding_type', 'rnn', 'rnn or mean')
 
 ## clustering information
-flags.DEFINE_integer('cluster_layer_0', 4, 'number of clusters in the first layer')
-flags.DEFINE_integer('cluster_layer_1', 2, 'number of clusters in the second layer')
+flags.DEFINE_integer('cluster_layer_0', 6, 'number of clusters in the first layer')
+flags.DEFINE_integer('cluster_layer_1', 3, 'number of clusters in the second layer')
 flags.DEFINE_integer('cluster_layer_2', 1, 'number of clusters in the third layer')
 
 ## Logging, saving, and testing options
 flags.DEFINE_bool('log', True, 'if false, do not log summaries, for debugging code.')
 flags.DEFINE_string('logdir', './log/1shot', 'directory for summaries and checkpoints.')
-flags.DEFINE_string('datadir', './', 'directory for datasets.')
+flags.DEFINE_string('datadir', './dataset', 'directory for datasets.')
 flags.DEFINE_bool('resume', True, 'resume training if there is a model available')
 flags.DEFINE_bool('train', True, 'True to train, False to test.')
 flags.DEFINE_bool('test_set', False, 'Set to true to test on the the test set, False for the validation set.')
