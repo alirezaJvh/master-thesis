@@ -71,11 +71,11 @@ class DataGenerator(object):
             self.img_size = config.get('img_size', (84, 84))
             self.dim_input = np.prod(self.img_size) * 3
             self.dim_output = self.num_classes
-            metatrain_folder = config.get('metatrain_folder', '{}/miniImagenet-data/train'.format(FLAGS.datadir))
+            metatrain_folder = config.get('metatrain_folder', '{}/mini-imagenet-data/train'.format(FLAGS.datadir))
             if FLAGS.test_set:
-                metaval_folder = config.get('metaval_folder', '{}/miniImagenet-data/test'.format(FLAGS.datadir))
+                metaval_folder = config.get('metaval_folder', '{}/mini-imagenet-data/test'.format(FLAGS.datadir))
             else:
-                metaval_folder = config.get('metaval_folder', '{}/miniImagenet-data/val'.format(FLAGS.datadir))
+                metaval_folder = config.get('metaval_folder', '{}/mini-imagenet-data/val'.format(FLAGS.datadir))
 
             metatrain_folders = [os.path.join(metatrain_folder, label) \
                                  for label in os.listdir(metatrain_folder) \
