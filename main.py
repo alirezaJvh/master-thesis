@@ -13,7 +13,7 @@ import pandas as pd
 FLAGS = flags.FLAGS
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 ## Dataset/method options
 flags.DEFINE_string('datasource', 'sinusoid', 'sinusoid or omniglot or miniimagenet or mixture or multidataset or multidataset_leave_one_out')
 flags.DEFINE_integer('leave_one_out_id',-1,'id of leave one out')
@@ -53,7 +53,7 @@ flags.DEFINE_integer('task_embedding_num_filters', 32, 'number of filters for ta
 flags.DEFINE_string('task_embedding_type', 'rnn', 'rnn or mean')
 
 ## clustering information
-flags.DEFINE_integer('cluster_layer_0', 4, 'number of clusters in the first layer')
+flags.DEFINE_integer('cluster_layer_0', 2, 'number of clusters in the first layer')
 flags.DEFINE_integer('cluster_layer_1', 2, 'number of clusters in the second layer')
 flags.DEFINE_integer('cluster_layer_2', 1, 'number of clusters in the third layer')
 
@@ -87,7 +87,7 @@ def train(model, saver, sess, exp_string, data_generator, resume_itr=0):
     prelosses, postlosses, embedlosses = [], [], []
 
     num_classes = data_generator.num_classes  # for classification, 1 otherwise
-
+    max_metaval_accuracy = 0
     for itr in range(resume_itr, FLAGS.pretrain_iterations + FLAGS.metatrain_iterations):
         feed_dict = {}
         if 'generate' in dir(data_generator):
@@ -135,8 +135,16 @@ def train(model, saver, sess, exp_string, data_generator, resume_itr=0):
             print(print_str)
             prelosses, postlosses, embedlosses = [], [], []
 
-        if (itr != 0) and itr % SAVE_INTERVAL == 0:
+        if (itr >= 80000) and itr % SAVE_INTERVAL == 0:
             saver.save(sess, FLAGS.logdir + '/' + exp_string + '/model' + str(itr))
+        
+        # save max meta val accuracy model
+        if (itr > 80000):
+            metaval_accuracy = sess.run([model.metaval_total_accuracies2[FLAGS.num_updates - 1]], feed_dict)
+            if metaval_accuracy[0] > max_metaval_accuracy:
+                max_metaval_accuracy = metaval_accuracy[0]
+                saver.save(sess, FLAGS.logdir + '/' + exp_string + '/model' + str(itr) + 'max')
+        
 
         if (itr != 0) and itr % TEST_PRINT_INTERVAL == 0 and (
                 FLAGS.datasource not in ['sinusoid', 'mixture']):
@@ -231,7 +239,7 @@ def test(model, saver, sess, exp_string, data_generator, test_num_updates=None):
     }
 
     df = df.append(new_row, ignore_index=True)
-    df.to_csv('result.csv', mode='a', index=False, header=False)
+    df.to_csv('./result/multi-dataset/final-result.csv', mode='a', index=False, header=False)
 
     print('Mean validation accuracy/loss, stddev, and confidence intervals')
     print((means, stds, ci95))
@@ -325,7 +333,7 @@ def main():
     if tf_data_load:
         model.construct_model(input_tensors=metaval_input_tensors, prefix='metaval_')
     model.summ_op = tf.summary.merge_all()
-    saver = loader = tf.train.Saver(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES), max_to_keep=10)
+    saver = loader = tf.train.Saver(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES), max_to_keep=45)
 
     if FLAGS.train == False:
         # change to original meta batch size when loading model.
